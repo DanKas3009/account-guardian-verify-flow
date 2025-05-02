@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,25 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+                // Pesalink custom colors
+                pesalink: {
+                    50: '#e6f7ff',
+                    100: '#b3e0ff',
+                    200: '#80c9ff',
+                    300: '#4db2ff',
+                    400: '#1a9cff',
+                    500: '#0086e6',
+                    600: '#006bb3',
+                    700: '#005080',
+                    800: '#00354d',
+                    900: '#001a26',
+                },
+                error: {
+                    light: '#ffebee',
+                    main: '#f44336',
+                    dark: '#c62828',
+                }
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +103,16 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+                'pulse-opacity': {
+                    '0%, 100%': { opacity: '1' },
+                    '50%': { opacity: '0.5' }
+                }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+                'pulse-opacity': 'pulse-opacity 1.5s ease-in-out infinite'
 			}
 		}
 	},
