@@ -1,11 +1,12 @@
 
-import React, { createContext, useContext, useReducer, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { 
   ValidationResult, 
   ValidatedAccount, 
   ValidationStatus,
   FileUploadResponse
 } from "@/types/validation";
+import { API_SERVICE } from "@/services/apiService";
 
 interface ValidationState {
   status: ValidationStatus;
@@ -60,6 +61,45 @@ export const ValidationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const reset = () => {
     setState(initialState);
   };
+
+  // Poll for job status when processing
+  useEffect(() => {
+    let pollingInterval: any = null;
+    
+    if (state.status === "processing" && state.currentJobId) {
+      pollingInterval = setInterval(async () => {
+        try {
+          const statusResponse = await API_SERVICE.getJobStatus(state.currentJobId!);
+          
+          // Update progress
+          setProgress(statusResponse.progress);
+          
+          // Check if completed
+          if (statusResponse.status === "completed") {
+            clearInterval(pollingInterval);
+            
+            // Get final results
+            const results = await API_SERVICE.getValidationResults(state.currentJobId!);
+            setResults(results);
+          } 
+          // Check if failed
+          else if (statusResponse.status === "failed") {
+            clearInterval(pollingInterval);
+            setError(`Validation failed: ${statusResponse.message}`);
+          }
+        } catch (err) {
+          console.error("Error polling job status:", err);
+          // Don't stop polling on error, just log it
+        }
+      }, 2000); // Poll every 2 seconds
+    }
+    
+    return () => {
+      if (pollingInterval) {
+        clearInterval(pollingInterval);
+      }
+    };
+  }, [state.status, state.currentJobId]);
 
   return (
     <ValidationContext.Provider

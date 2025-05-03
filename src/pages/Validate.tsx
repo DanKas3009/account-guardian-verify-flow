@@ -10,6 +10,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { validationService } from "@/services/validationService";
 import { useValidation } from "@/context/ValidationContext";
 import { toast } from "@/components/ui/sonner";
+import { API_SERVICE } from "@/services/apiService";
 
 const Validate: React.FC = () => {
   const { 
@@ -35,7 +36,7 @@ const Validate: React.FC = () => {
       
       // Simulate progressive upload
       const uploadInterval = setInterval(() => {
-        setProgress(prev => {
+        setProgress((prev: number) => {
           if (prev >= 95) {
             clearInterval(uploadInterval);
             return 95;
@@ -106,7 +107,7 @@ const Validate: React.FC = () => {
           </p>
         </div>
         
-        {status === "idle" || status === "error" ? (
+        {(status === "idle" || status === "error") ? (
           <div className="max-w-2xl mx-auto my-8">
             <FileUploader 
               onFileUpload={handleFileUpload} 
