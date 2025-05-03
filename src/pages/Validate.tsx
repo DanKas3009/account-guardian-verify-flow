@@ -36,12 +36,13 @@ const Validate: React.FC = () => {
       
       // Simulate progressive upload
       const uploadInterval = setInterval(() => {
-        setProgress((prev: number) => {
-          if (prev >= 95) {
+        setProgress((prev) => {
+          const newProgress = prev + Math.floor(Math.random() * 10) + 1;
+          if (newProgress >= 95) {
             clearInterval(uploadInterval);
             return 95;
           }
-          return prev + Math.floor(Math.random() * 10) + 1;
+          return newProgress;
         });
       }, 300);
       
