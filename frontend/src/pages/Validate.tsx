@@ -36,7 +36,7 @@ const Validate: React.FC = () => {
       
       // Simulate progressive upload
       const uploadInterval = setInterval(() => {
-        setProgress((prev) => {
+        setProgress((prev: number) => {
           const newProgress = prev + Math.floor(Math.random() * 10) + 1;
           if (newProgress >= 95) {
             clearInterval(uploadInterval);
@@ -108,7 +108,7 @@ const Validate: React.FC = () => {
           </p>
         </div>
         
-        {(status === "idle" || status === "error") ? (
+        {status === "idle" || status === "error" ? (
           <div className="max-w-2xl mx-auto my-8">
             <FileUploader 
               onFileUpload={handleFileUpload} 
